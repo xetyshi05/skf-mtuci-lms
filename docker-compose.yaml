@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mrsmtuci-frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - mrsmtuci-net
+
+networks:
+  mrsmtuci-net:
+    driver: bridge
