@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+ssl/
+*.pem
+*.key
+.DS_Store
+*.log
+.vscode
+.idea

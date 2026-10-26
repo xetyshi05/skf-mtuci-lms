@@ -53,9 +53,9 @@ npm run dev
 VITE_API_URL=https://example.com npm run dev
 ```
 
-Если `VITE_API_URL` не указана, запросы выполняются относительно текущего домена. В dev-режиме Vite проксирует `/api` на `http://lms-api.space` согласно [vite.config.js](/Users/motya/Desktop/programs/skf-mtuci-lms/vite.config.js).
+Если `VITE_API_URL` не указана, запросы выполняются относительно текущего домена. В dev-режиме Vite проксирует `/api` на `http://lms-api.space` согласно [vite.config.js](vite.config.js).
 
-Для локальной настройки можно создать файл `.env.local`:
+Для локальной настройки скопируйте `.env.example` в `.env.local`:
 
 ```env
 VITE_API_URL=
@@ -94,12 +94,14 @@ docker compose up -d --build
 - `80:80` - HTTP с редиректом на HTTPS.
 - `443:443` - HTTPS.
 
-Production-образ собирает приложение на Node.js 20 Alpine и отдает готовые файлы через Nginx. Конфигурация Nginx находится в [nginx/nginx.conf](/Users/motya/Desktop/programs/skf-mtuci-lms/nginx/nginx.conf).
+Production-образ собирает приложение на Node.js 20 Alpine и отдает готовые файлы через Nginx. Конфигурация Nginx находится в [nginx/nginx.conf](nginx/nginx.conf).
 
-Для HTTPS в контейнере используются файлы:
+Для HTTPS сертификаты не хранятся в репозитории: поместите `ssl/cert.pem` и `ssl/key.pem` рядом с `docker-compose.yaml` - они монтируются в контейнер только для чтения. Для локальной проверки можно создать самоподписанный сертификат:
 
-- [ssl/cert.pem](/Users/motya/Desktop/programs/skf-mtuci-lms/ssl/cert.pem)
-- [ssl/key.pem](/Users/motya/Desktop/programs/skf-mtuci-lms/ssl/key.pem)
+```bash
+mkdir -p ssl && openssl req -x509 -nodes -newkey rsa:2048 -days 365 \
+  -keyout ssl/key.pem -out ssl/cert.pem -subj "/CN=localhost"
+```
 
 ## Маршруты приложения
 
@@ -141,8 +143,8 @@ src/
   App.jsx       Роутинг и защита маршрутов
   main.jsx      Точка входа React
 nginx/          Конфигурация Nginx для production
-ssl/            SSL-сертификат и ключ для контейнера
-dist/           Production-сборка
+docs/           Документация backend API (api.html)
+public/         Статические файлы (логотипы, фон)
 ```
 
 ## Сборка перед деплоем
@@ -153,4 +155,4 @@ dist/           Production-сборка
 npm run build
 ```
 
-После сборки статические файлы будут доступны в `dist`.
+После сборки статические файлы будут доступны в `dist` (директория не хранится в git).

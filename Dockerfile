@@ -15,10 +15,7 @@ FROM nginx:1.27-alpine AS runner
 # Copy nginx config
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy SSL certificates
-COPY ssl/cert.pem /etc/nginx/ssl/cert.pem
-COPY ssl/key.pem  /etc/nginx/ssl/key.pem
-
+# SSL certificates are mounted at runtime (see docker-compose.yaml)
 # Copy built assets
 COPY --from=builder /app/dist /usr/share/nginx/html
 

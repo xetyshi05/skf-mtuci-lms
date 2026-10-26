@@ -8,6 +8,9 @@ services:
       - "80:80"
       - "443:443"
     restart: unless-stopped
+    volumes:
+      - ./ssl/cert.pem:/etc/nginx/ssl/cert.pem:ro
+      - ./ssl/key.pem:/etc/nginx/ssl/key.pem:ro
     environment:
       - NODE_ENV=production
     networks:
